@@ -1,22 +1,32 @@
-import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import { observer } from 'mobx-react-lite';
+import { SubComponent } from './SubComponent';
+import { CountStore } from './CountStore';
 
-function App() {
-  const [count, setCount] = useState(0)
+type AppProps = {
+  message: string;
+}
+
+const countStore = new CountStore();
+
+const App = observer((props: AppProps) => {
+  const { message } = props;
+  const { count } = countStore;
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React hot reloaded!</p>
+        <p>{message}</p>
         <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
+          <button type="button" onClick={() => countStore.increment()}>
             count is: {count}
           </button>
         </p>
+        <SubComponent count={count} />
         <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
+          Edit <code>App.tsx</code> and save to test HMR updates omg.
         </p>
         <p>
           <a
@@ -40,6 +50,6 @@ function App() {
       </header>
     </div>
   )
-}
+});
 
-export default App
+export default App;
